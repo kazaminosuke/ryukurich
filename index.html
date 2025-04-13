@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>りゅっくりチャンネル</title>
+   <link rel="icon"href="mnt/data/icon.ico" type="image/png">
+
+  <!-- YouTube Subscribe ボタン用 -->
+  <script src="https://apis.google.com/js/platform.js"></script>
+
+  <style>
+    body {
+      background-color: #7fecff;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+    }
+    header {
+      text-align: center;
+    }
+    .banner {
+      max-width: 80%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .sns-links {
+      margin: 30px 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .sns-item {
+      text-align: center;
+      font-size: 0.9em;
+    }
+    .sns-icon {
+      width: 60px;
+      height: 60px;
+    }
+    .videos {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .videos iframe {
+      width: 400px;
+      height: 225px;
+      border: none;
+      border-radius: 10px;
+    }
+    .subscribe {
+      text-align: center;
+      margin: 20px 0 40px;
+    }
+    footer {
+      margin: 20px;
+      font-size: 0.8em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="banner" src="mnt/data/bannr.png" alt="りゅっくりチャンネル バナー">
+  </header>
+
+  <section class="sns-links">
+    <div class="sns-item">
+      <a href="https://discord.gg/MQQ92XS4Vy" title="Discord">
+        <img class="sns-icon" src="mnt/data/d.svg" alt="Discord">
+      </a>
+      <div>Discord</div>
+    </div>
+    <div class="sns-item">
+      <a href="https://www.threads.net/@ryultukuricn" title="Threads">
+        <img class="sns-icon" src="https://simpleicons.org/icons/threads.svg" alt="Threads">
+      </a>
+      <div>Threads</div>
+    </div>
+    <div class="sns-item">
+      <a href="https://www.instagram.com/ryultukuricn" title="Instagram">
+        <img class="sns-icon" src="https://simpleicons.org/icons/instagram.svg" alt="Instagram">
+      </a>
+      <div>Instagram</div>
+    </div>
+    <div class="sns-item">
+      <a href="https://www.nicovideo.jp/user/134826374?rf=nvpc&rp=watch&ra=video_information" title="ニコニコ動画">
+        <img class="sns-icon" src="mnt/data/nikoniko.svg" alt="Niconico">
+      </a>
+      <div>ニコニコ</div>
+    </div>
+    <div class="sns-item">
+      <a href="https://x.com/ryukkurich81084" title="X (Twitter)">
+        <img class="sns-icon" src="https://simpleicons.org/icons/x.svg" alt="X">
+      </a>
+      <div>X (Twitter)</div>
+    </div>
+    <div class="sns-item">
+      <a href="https://www.youtube.com/@りゅっくりチャンネル" title="YouTube">
+        <img class="sns-icon" src="https://simpleicons.org/icons/youtube.svg" alt="YouTube">
+      </a>
+      <div>YouTube</div>
+    </div>
+  </section>
+
+  <section class="subscribe">
+    <!-- YouTubeのチャンネル登録ボタン -->
+    <div class="g-ytsubscribe"
+         data-channelid="UC5ecKp0NzO7ceG6J4HmpRuQ"
+         data-layout="default"
+         data-count="default"></div>
+  </section>
+
+  <section class="videos" id="youtube-videos">
+    <!-- 最新動画がここに埋め込まれます -->
+  </section>
+
+  <footer>
+    &copy; 2025 りゅっくりチャンネル
+  </footer>
+
+  <!-- 最新動画を取得して表示 -->
+  <script>
+    const API_KEY = 'AIzaSyCYuXRZfmdfF_JdymSZVvhzmgH0P2cabpk';
+    const CHANNEL_ID = 'UC5ecKp0NzO7ceG6J4HmpRuQ';
+    const MAX_RESULTS = 2;
+
+    fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}`)
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('youtube-videos');
+        data.items.forEach(item => {
+          if (item.id.kind === 'youtube#video') {
+            const videoId = item.id.videoId;
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            iframe.allowFullscreen = true;
+            iframe.width = "400";
+            iframe.height = "225";
+            iframe.style.borderRadius = "10px";
+            iframe.style.margin = "10px";
+            container.appendChild(iframe);
+          }
+        });
+      })
+      .catch(err => console.error('YouTube API エラー:', err));
+  </script>
+</body>
+</html>
